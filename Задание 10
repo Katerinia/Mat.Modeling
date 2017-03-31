@@ -1,11 +1,11 @@
 setwd("C:/Users/Administrator/Desktop")
-dat = read_csv("https://www.dropbox.com/s/erhs9hoj4vhrz0b/eddypro.csv?dl=1", skip = 1, na =c("","NA","-9999","-9999.0"), comment=c("["))
-dat = dat[-1,]
-glimpse(dat)
-dat = select(dat, -(roll))
-dat = dat %>% mutate_if(is.character, factor)
-names(dat) =  str_replace_all(names(dat), "[!]","_emph_")
-names(dat) = names(dat) %>% 
+tbl = read_csv("https://www.dropbox.com/s/erhs9hoj4vhrz0b/eddypro.csv?dl=1", skip = 1, na =c("","NA","-9999","-9999.0"), comment=c("["))
+tbl = tbl[-1,]
+glimpse(tbl)
+tbl = select(tbl, -(roll))
+tbl = tbl %>% mutate_if(is.character, factor)
+names(tbl) =  str_replace_all(names(tbl), "[!]","_emph_")
+names(tbl) = names(tbl) %>% 
   str_replace_all("[!]","_emph_") %>% 
   +     str_replace_all("[?]","_quest_") %>% 
   +     str_replace_all("[*]","_star_") %>% 
@@ -19,14 +19,14 @@ names(dat) = names(dat) %>%
   +     str_replace_all("[&]","_amp_") %>%
   +     str_replace_all("[\\^]","_power_") %>%
   +     str_replace_all("[()]","_") 
-glimpse(dat)
-sapply(dat,is.numeric)
-dat_numeric = dat[,sapply(dat,is.numeric) ]
-cor_td = cor(dat_numeric)
+glimpse(tbl)
+sapply(tbl,is.numeric)
+tbl_numeric = tbl[,sapply(tbl,is.numeric) ]
+cor_td = cor(tbl_numeric)
 cor_td
-cor_td = cor(drop_na(dat_numeric))
+cor_td = cor(drop_na(tbl_numeric))
 cor_td
-cor_td = cor(drop_na(dat_numeric)) %>% as.data.frame %>% select(co2_flux)
+cor_td = cor(drop_na(tbl_numeric)) %>% as.data.frame %>% select(co2_flux)
 vars = row.names(cor_td)[cor_td$co2_flux^2 > .1] %>% na.exclude
 tbl_numeric = na.omit(tbl_numeric)
 tbl_numeric[, c(20,21,22,86,87,88,89,90,91,92,93,94)] = NULL 
